@@ -112,6 +112,9 @@ function octalConversion(toBase,number){
     switch(toBase){
         case "10":
             return todecimal(8,number);
+        case "2":
+            return decimalConversion(toBase,todecimal(8,number));
+        
     }
 }
 
