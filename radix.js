@@ -114,7 +114,8 @@ function octalConversion(toBase,number){
             return todecimal(8,number);
         case "2":
             return decimalConversion(toBase,todecimal(8,number));
-        
+        case "16":
+            return decimalConversion(toBase,todecimal(8,number));
     }
 }
 
@@ -146,5 +147,5 @@ function decimalConversion(toBase,number){
 }
 
  function hexadecimalConversion(toBase,number){
-
+    
 }
