@@ -70,7 +70,14 @@ function binaryConversion(fromBase,toBase,number){
 }
 
 function todecimal(fromBase,number){
-    numstr=number.toString();
+    numstr=number.toString().toUpperCase();
+    const digitMap={
+        '0': 0, '1': 1, '2': 2, '3': 3,
+        '4': 4, '5': 5, '6': 6, '7': 7,
+        '8': 8, '9': 9, 'A': 10, 'B': 11,
+        'C': 12, 'D': 13, 'E': 14, 'F': 15
+    }
+
     function power(i){
         let answer=1;
         for(let j=0;j<i;j++){
@@ -87,17 +94,19 @@ function powerd(i){
     let integerpart=parts[0];
     let decimalpart=parts.length>1 ? parts[1] : "";
     let result=0;
-    if (integerpart===0) result=0;
+    if (integerpart==="0") result=0;
     else{
         for(let i=0;i<integerpart.length;i++){
-            let a=parseInt(integerpart[integerpart.length-i-1]);
+            let char=integerpart[integerpart.length-i-1];
+            let a=digitMap[char];
             result+=(a*power(i));
         }
     }
 
     if(decimalpart.length>0){
         for(let i=0;i<decimalpart.length;i++){
-            let a=parseInt(decimalpart[i]);
+            let char=decimalpart[i];
+            let a=digitMap[char];
             result+=(a*powerd(i+1));
         }
     }
@@ -105,7 +114,7 @@ function powerd(i){
 }
 
 function binarytooctalandhexadecimal(toBase,number){
-    return decimalConversion(toBase,todecimal(number));
+    return decimalConversion(toBase,todecimal(2,number));
 }
 
 function octalConversion(toBase,number){
@@ -147,5 +156,12 @@ function decimalConversion(toBase,number){
 }
 
  function hexadecimalConversion(toBase,number){
-    
+    switch(toBase){
+        case "2":
+            return decimalConversion(toBase,todecimal(16,number));
+        case "8":
+            return decimalConversion(toBase,todecimal(16,number));
+        case "10":
+            return todecimal(16,number);
+    }
 }
