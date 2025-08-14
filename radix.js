@@ -48,7 +48,7 @@ function isValidNumberForBase(number, fromBase) {
 function evaluate(fromBase,toBase,number){
        switch(fromBase){
        case "2":
-         return binaryConversion(toBase,number);
+         return binaryConversion(fromBase,toBase,number);
        case "8":
         return octalConversion(toBase,number);
        case "10":
@@ -58,23 +58,23 @@ function evaluate(fromBase,toBase,number){
        }
 }
 
-function binaryConversion(toBase,number){
+function binaryConversion(fromBase,toBase,number){
     switch(toBase){
         case "8":
             return binarytooctalandhexadecimal(toBase,number);
         case "10":
-            return binarytodecimal(number);
+            return todecimal(fromBase,number);
         case "16":
             return binarytooctalandhexadecimal(toBase,number);
     }
 }
 
-function binarytodecimal(number){
+function todecimal(fromBase,number){
     numstr=number.toString();
     function power(i){
         let answer=1;
         for(let j=0;j<i;j++){
-            answer*=2;
+            answer*=fromBase;
         }
         return answer;
     }
@@ -105,11 +105,14 @@ function powerd(i){
 }
 
 function binarytooctalandhexadecimal(toBase,number){
-    return decimalConversion(toBase,binarytodecimal(number));
+    return decimalConversion(toBase,todecimal(number));
 }
 
 function octalConversion(toBase,number){
-
+    switch(toBase){
+        case "10":
+            return todecimal(8,number);
+    }
 }
 
 function decimalConversion(toBase,number){
