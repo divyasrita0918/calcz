@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radix Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Radix converter</h1>
+
+        <div class="input-group">
+            <input type="text" id="number" placeholder="Enter number">
+            <select id="fromBase">
+                <option value="2">Binary (Base 2)</option>
+                <option value="8">Octal (Base 8)</option>
+                <option value="10" selected>Decimal (Base 10)</option>
+                <option value="16">Hexadecimal (Base 16)</option>
+            </select>
+        
+            <select id="toBase">
+                <option value="2" selected>Binary (Base 2)</option>
+                <option value="8">Octal (Base 8)</option>
+                <option value="10">Decimal (Base 10)</option>
+                <option value="16">Hexadecimal (Base 16)</option>
+            </select>
+            <button id="convertBtn">Convert</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script src="radix.js"></script>
+</body>
+</html>

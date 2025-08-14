@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Calculator</title>
+<link rel="stylesheet" href="scical.css">
+</head>
+<body>
+
+<div class="calculator">
+    <h1>Scientific Calculator</h1>
+
+    <div class="display" id="display">0</div>
+
+    <input type="text" id="input" placeholder="Click buttons..." />
+
+    <button class="history-toggle" onclick="toggleHistory()">History</button>
+
+  <div id="history">
+  <button class="clear-history" onclick="clearHistory()">Clear</button>
+  <div id="history-entries"></div> 
+</div>
+
+
+    <!-- Buttons Grid -->
+    <div class="buttons">
+        <!-- First Row -->
+        <button onclick="insertFunc('sin(')">sin</button>
+        <button onclick="insertFunc('cos(')">cos</button>
+        <button onclick="insertFunc('tan(')">tan</button>
+
+        <label class="radio-btn">
+            <input type="radio" name="angleMode" value="deg" checked> Deg
+        </label>
+        <label class="radio-btn">
+            <input type="radio" name="angleMode" value="rad"> Rad
+        </label>
+        <!-- Second Row -->
+        <button onclick="appendFunc('asin(')">sin⁻¹</button>
+        <button onclick="appendFunc('acos(')">cos⁻¹</button>
+        <button onclick="appendFunc('atan(')">tan⁻¹</button>
+        <button onclick="appendFunc('π')">π</button>
+        <button onclick="appendFunc('e')">e</button>
+
+        <!-- Third Row -->
+        <button onclick="appendFunc('^')">xʸ</button>
+        <button onclick="appendFunc('³')">x³</button>
+        <button onclick="appendFunc('²')">x²</button>
+        <button onclick="appendFunc('e^')">eˣ</button>
+        <button onclick="appendFunc('10^')">10ˣ</button>
+
+        <!-- Fourth Row -->
+        <button onclick="appendFunc('y√x')">ʸ√x</button>
+        <button onclick="appendFunc('∛')">∛x</button>
+        <button onclick="appendFunc('√')">√x</button>
+        <button onclick="appendFunc('ln(')">ln</button>
+        <button onclick="appendFunc('log(')">log</button>
+
+        <!-- Fifth Row -->
+        <button onclick="appendFunc('(')">(</button>
+        <button onclick="appendFunc(')')">)</button>
+        <button onclick="appendFunc('1/')">1/x</button>
+        <button onclick="appendFunc('%')">%</button>
+        <button onclick="appendFunc('!')">n!</button>
+
+        <!-- Sixth Row -->
+        <button onclick="appendFunc('7')">7</button>
+        <button onclick="appendFunc('8')">8</button>
+        <button onclick="appendFunc('9')">9</button>
+        <button onclick="appendFunc('+')">+</button>
+        <button onclick="backspace()">⌫</button>
+
+        <!-- Seventh Row -->
+        <button onclick="appendFunc('4')">4</button>
+        <button onclick="appendFunc('5')">5</button>
+        <button onclick="appendFunc('6')">6</button>
+        <button onclick="appendFunc('-')">−</button>
+        <button onclick="ans()">Ans</button>
+
+        <!-- Eighth Row -->
+        <button onclick="appendFunc('1')">1</button>
+        <button onclick="appendFunc('2')">2</button>
+        <button onclick="appendFunc('3')">3</button>
+        <button onclick="appendFunc('*')">×</button>
+        <button onclick="appendFunc('/')">÷</button>
+
+        <!-- Ninth Row -->
+        <button onclick="appendFunc('0')">0</button>
+        <button onclick="appendFunc('.')">.</button>
+        <button onclick="appendFunc('E')">EXP</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="clearDisplay()">C</button>
+    </div>
+</div>
+
+<script src="scical.js"></script>
+</body>
+</html>
