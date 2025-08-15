@@ -13,7 +13,7 @@
 
     <div class="display" id="display">0</div>
 
-    <input type="text" id="input" placeholder="Click buttons..." />
+    <div contenteditable="true" id="input" placeholder="Click buttons..." ></div>
 
     <button class="history-toggle" onclick="toggleHistory()">History</button>
 
@@ -26,9 +26,9 @@
     <!-- Buttons Grid -->
     <div class="buttons">
         <!-- First Row -->
-        <button onclick="insertFunc('sin(')">sin</button>
-        <button onclick="insertFunc('cos(')">cos</button>
-        <button onclick="insertFunc('tan(')">tan</button>
+        <button onclick="append('sin(')">sin</button>
+        <button onclick="append('cos(')">cos</button>
+        <button onclick="append('tan(')">tan</button>
 
         <label class="radio-btn">
             <input type="radio" name="angleMode" value="deg" checked> Deg
@@ -37,58 +37,58 @@
             <input type="radio" name="angleMode" value="rad"> Rad
         </label>
         <!-- Second Row -->
-        <button onclick="appendFunc('asin(')">sin⁻¹</button>
-        <button onclick="appendFunc('acos(')">cos⁻¹</button>
-        <button onclick="appendFunc('atan(')">tan⁻¹</button>
-        <button onclick="appendFunc('π')">π</button>
-        <button onclick="appendFunc('e')">e</button>
+        <button onclick="append('asin(')">sin⁻¹</button>
+        <button onclick="append('acos(')">cos⁻¹</button>
+        <button onclick="append('atan(')">tan⁻¹</button>
+        <button onclick="append('π')">π</button>
+        <button onclick="append('e')">e</button>
 
         <!-- Third Row -->
-        <button onclick="appendFunc('^')">xʸ</button>
-        <button onclick="appendFunc('³')">x³</button>
-        <button onclick="appendFunc('²')">x²</button>
-        <button onclick="appendFunc('e^')">eˣ</button>
-        <button onclick="appendFunc('10^')">10ˣ</button>
+        <button onclick="append('^')">xʸ</button>
+        <button onclick="append('³')">x³</button>
+        <button onclick="append('²')">x²</button>
+        <button onclick="append('e^')">eˣ</button>
+        <button onclick="append('10^')">10ˣ</button>
 
         <!-- Fourth Row -->
-        <button onclick="appendFunc('y√x')">ʸ√x</button>
-        <button onclick="appendFunc('∛')">∛x</button>
-        <button onclick="appendFunc('√')">√x</button>
-        <button onclick="appendFunc('ln(')">ln</button>
-        <button onclick="appendFunc('log(')">log</button>
+        <button onclick="insertYrootX()">ʸ√x</button>
+        <button onclick="append('∛')">∛x</button>
+        <button onclick="append('√')">√x</button>
+        <button onclick="append('ln(')">ln</button>
+        <button onclick="append('log(')">log</button>
 
         <!-- Fifth Row -->
-        <button onclick="appendFunc('(')">(</button>
-        <button onclick="appendFunc(')')">)</button>
-        <button onclick="appendFunc('1/')">1/x</button>
-        <button onclick="appendFunc('%')">%</button>
-        <button onclick="appendFunc('!')">n!</button>
+        <button onclick="append('(')">(</button>
+        <button onclick="append(')')">)</button>
+        <button onclick="append('1/')">1/x</button>
+        <button onclick="append('%')">%</button>
+        <button onclick="append('!')">n!</button>
 
         <!-- Sixth Row -->
-        <button onclick="appendFunc('7')">7</button>
-        <button onclick="appendFunc('8')">8</button>
-        <button onclick="appendFunc('9')">9</button>
-        <button onclick="appendFunc('+')">+</button>
-        <button onclick="backspace()">⌫</button>
+        <button onclick="append('7')">7</button>
+        <button onclick="append('8')">8</button>
+        <button onclick="append('9')">9</button>
+        <button onclick="append('+')">+</button>
+        <button onclick="deleteLast()">⌫</button>
 
         <!-- Seventh Row -->
-        <button onclick="appendFunc('4')">4</button>
-        <button onclick="appendFunc('5')">5</button>
-        <button onclick="appendFunc('6')">6</button>
-        <button onclick="appendFunc('-')">−</button>
+        <button onclick="append('4')">4</button>
+        <button onclick="append('5')">5</button>
+        <button onclick="append('6')">6</button>
+        <button onclick="append('-')">-</button>
         <button onclick="ans()">Ans</button>
 
         <!-- Eighth Row -->
-        <button onclick="appendFunc('1')">1</button>
-        <button onclick="appendFunc('2')">2</button>
-        <button onclick="appendFunc('3')">3</button>
-        <button onclick="appendFunc('*')">×</button>
-        <button onclick="appendFunc('/')">÷</button>
+        <button onclick="append('1')">1</button>
+        <button onclick="append('2')">2</button>
+        <button onclick="append('3')">3</button>
+        <button onclick="append('*')">x</button>
+        <button onclick="append('/')">÷</button>
 
         <!-- Ninth Row -->
-        <button onclick="appendFunc('0')">0</button>
-        <button onclick="appendFunc('.')">.</button>
-        <button onclick="appendFunc('E')">EXP</button>
+        <button onclick="append('0')">0</button>
+        <button onclick="append('.')">.</button>
+        <button onclick="append('E')">EXP</button>
         <button onclick="calculate()">=</button>
         <button onclick="clearDisplay()">C</button>
     </div>
