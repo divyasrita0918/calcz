@@ -13,7 +13,7 @@
 
     <div class="display" id="display">0</div>
 
-    <div contenteditable="true" id="input" placeholder="Click buttons..." ></div>
+    <input contenteditable="true" id="input" placeholder="Click buttons..." />
 
     <button class="history-toggle" onclick="toggleHistory()">History</button>
 
@@ -79,7 +79,7 @@
 
         <button onclick="append('0')">0</button>
         <button onclick="append('.')">.</button>
-        <button onclick="append('E')">EXP</button>
+        <button onclick="append('*10^')">EXP</button>
         <button onclick="calculate()">=</button>
         <button onclick="clearDisplay()">C</button>
     </div>
