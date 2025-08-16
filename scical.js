@@ -117,9 +117,75 @@ function maptoken(tokens){
       '^': "power", '√':"sqrt",'π':3.14159265,'e':2.7182818, '!':"factorial"
     }
     for(let i=0;i<tokens.length;i++){
-      if(tokens[i]==='^' || tokens[i]==='√' || tokens[i]==='π' || tokens[i]==='e' || tokens[i]==='!') 
+
+      const token=tokens[i];
+      if(token==='^' || token==='√' || token==='π' || token==='e' || token==='!') 
         tokens[i]=mapping[tokens[i]];
+
+      else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
+            tokens[i] = "u-"; 
+
+      else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
+            tokens[i] = "u+"; 
+        
       else continue;
     }
     return tokens;
+}
+
+function infixToPostfix(tokens) {
+  const stack = [];
+  const output = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
+    if (/^\d+(\.\d+)?$/.test(token)) {
+      output.push(token);
+    }
+
+     else if (token === "-" && (i === 0 || ["+","-","*","/","^","("].includes(tokens[i-1]))) {
+      stack.push("u-"); 
+    }
+
+    else if (
+      ["sin","cos","tan","asin","acos","atan",
+       "ln","log","sqrt","factorial"].includes(token)
+    ) {
+      stack.push(token);
+    }
+
+    else if (token === "(") {
+      stack.push(token);
+    }
+
+    else if (token === ")") {
+      while (stack.length && stack[stack.length - 1] !== "(") {
+        output.push(stack.pop());
+      }
+      stack.pop(); 
+
+      if (stack.length && 
+         ["sin","cos","tan","asin","acos","atan",
+          "ln","log","sqrt","factorial","u-"].includes(stack[stack.length - 1])) {
+        output.push(stack.pop());
+      }
+    }
+
+    else {
+      while (
+        stack.length &&
+        precedence(stack[stack.length - 1]) >= precedence(token)
+      ) {
+        output.push(stack.pop());
+      }
+      stack.push(token);
+    }
+  }
+  
+  while (stack.length) {
+    output.push(stack.pop());
+  }
+
+  return output;
 }
