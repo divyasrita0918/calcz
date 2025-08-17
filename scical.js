@@ -13,7 +13,7 @@ function append(value) {
 }
 
 function calculate() {
-  const angleMode=document.querySelector('input[name="angleMode"]:checked');
+  const angleMode=document.querySelector('input[name="angleMode"]:checked').value;
   const expr = display.value;
   if (!expr.trim()) return;
   if (hasInvalidChars(expr)) {
@@ -21,7 +21,7 @@ function calculate() {
     return;
   }
   try {
-    const result = evaluate(expr);
+    const result = evaluate(expr,angleMode);
     displayResult.textContent = result;
     addToHistory(expr, result);
     display.value = "";
@@ -31,7 +31,7 @@ function calculate() {
 }
 
 function hasInvalidChars(expr) {
-  const validChars = /^[0-9+\-*/^%!().√πe\sA-Za-z]*$/;
+  const validChars = /^[0-9+\-*/^%!().√∛πe\sA-Za-z]*$/;
   if (!validChars.test(expr)) return true;
 
   const allowedFunctions = [
@@ -90,12 +90,12 @@ function clearDisplay() {
 
 //expression evaluation
 
-function evaluate(expr){
+function evaluate(expr,angleMode){
   const tokensbeforemap=tokenize(expr);
   const tokens=maptoken(tokensbeforemap);
   if(tokens[0]==="-") tokens.unshift("0");
   const postfixTokens = infixToPostfix(tokens);
-  const result = evaluatePostfix(postfixTokens);
+  const result = evaluatePostfix(postfixTokens,angleMode);
   return result;
 }
 
@@ -103,23 +103,28 @@ function precedence(op){
   if(op==="+" || op==="-") return 1;
   if(op==="*" || op==="/") return 2;
   if(op==="power") return 3;
-  if(op==="factorial" || op==="sqrt" || op==="sin" || op==="cos" || op==="tan" || op==="asin" || op==="acos" || op==="atan" || op==="sqrt" || op==="ln" || op==="log") return 4;
+  if(op==="factorial" || op==="sqrt" || op==="sin" || op==="cos" || op==="tan" || op==="asin" || op==="acos" || op==="atan" || op==="sqrt" || op==="ln" || op==="log" || op==="cbrt") return 4;
   return 0;
 }
 function tokenize(expr){
     const tokens = expr.match(
-    /(\d+(\.\d+)?)|[+\-*/^%!√()]|sin|cos|tan|asin|acos|atan|ln|log|π|e/g);
+    /(\d+(\.\d+)?)|[+\-*/^%!√∛()]|sin|cos|tan|asin|acos|atan|ln|log|π|e/g);
     return tokens || [];
 }
 
 function maptoken(tokens){
     const mapping={
-      '^': "power", '√':"sqrt",'π':3.14159265,'e':2.7182818, '!':"factorial"
+      '^': "power", 
+      '√':"sqrt",
+      'π':3.14159265,
+      'e':2.7182818, 
+      '!':"factorial",
+      '∛':"cbrt"
     }
     for(let i=0;i<tokens.length;i++){
 
       const token=tokens[i];
-      if(token==='^' || token==='√' || token==='π' || token==='e' || token==='!') 
+      if(token==='^' || token==='√' || token==='π' || token==='e' || token==='!' || token==='∛') 
         tokens[i]=mapping[tokens[i]];
 
       else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
@@ -150,7 +155,7 @@ function infixToPostfix(tokens) {
 
     else if (
       ["sin","cos","tan","asin","acos","atan",
-       "ln","log","sqrt","factorial"].includes(token)
+       "ln","log","sqrt","factorial","cbrt"].includes(token)
     ) {
       stack.push(token);
     }
@@ -167,7 +172,7 @@ function infixToPostfix(tokens) {
 
       if (stack.length && 
          ["sin","cos","tan","asin","acos","atan",
-          "ln","log","sqrt","factorial","u-"].includes(stack[stack.length - 1])) {
+          "ln","log","sqrt","factorial","u-","cbrt"].includes(stack[stack.length - 1])) {
         output.push(stack.pop());
       }
     }
@@ -182,10 +187,106 @@ function infixToPostfix(tokens) {
       stack.push(token);
     }
   }
-  
+
   while (stack.length) {
     output.push(stack.pop());
   }
 
   return output;
 }
+
+function evaluatePostfix(tokens,angleMode) {
+  const stack = [];
+
+  for (const token of tokens) {
+    if (/^\d+(\.\d+)?$/.test(token)) {
+      
+      stack.push(parseFloat(token));
+    } 
+    else if (token === "u-") {
+      
+      const a = stack.pop();
+      stack.push(-a);
+    } 
+    else if (token === "u+") {
+      
+      const a = stack.pop();
+      stack.push(a);
+    } 
+    else if (token === "factorial") {
+      const a = stack.pop();
+      if (a < 0 || !Number.isInteger(a)) throw "Invalid factorial";
+      let res = 1;
+      for (let i = 1; i <= a; i++) res *= i;
+      stack.push(res);
+    } 
+    else if (token === "sqrt") {
+      const a = stack.pop();
+      stack.push(Math.sqrt(a));
+    } 
+    else if (token === "cbrt") {
+    const a = stack.pop();
+    stack.push(Math.cbrt(a));   
+    }
+
+    else if (["sin","cos","tan","asin","acos","atan","ln","log"].includes(token)) {
+      const a = parseFloat(stack.pop());
+  
+      switch(token) {
+    case "sin":
+        stack.push(Math.sin(angleMode === "deg" ? toRadians(a) : a));
+        break;
+    case "cos":
+        stack.push(Math.cos(angleMode === "deg" ? toRadians(a) : a));
+        break;
+    case "tan":
+        stack.push(Math.tan(angleMode === "deg" ? toRadians(a) : a));
+        break;
+
+    case "asin":
+        stack.push(angleMode === "deg" ? toDegrees(Math.asin(a)) : Math.asin(a));
+        break;
+    case "acos":
+        stack.push(angleMode === "deg" ? toDegrees(Math.acos(a)) : Math.acos(a));
+        break;
+    case "atan":
+        stack.push(angleMode === "deg" ? toDegrees(Math.atan(a)) : Math.atan(a));
+        break;
+
+    case "ln":
+        stack.push(Math.log(a));
+        break;
+    case "log":
+        stack.push(Math.log10(a));
+        break;
+}
+
+    } 
+
+    else {
+     
+      const b = parseFloat(stack.pop());
+      const a = parseFloat(stack.pop());
+      switch(token) {
+        case "+": stack.push(a + b); break;
+        case "-": stack.push(a - b); break;
+        case "*": stack.push(a * b); break;
+        case "/": stack.push(a / b); break;
+        case "power": stack.push(Math.pow(a, b)); break;
+        default: throw "Unknown operator " + token;
+      }
+    }
+  }
+
+  if (stack.length !== 1) throw "Invalid Expression";
+  return stack[0];
+}
+
+function toRadians(deg) {
+  return deg * Math.PI / 180;
+}
+
+function toDegrees(rad) {
+    return rad * 180 / Math.PI;
+}
+
