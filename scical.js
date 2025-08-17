@@ -70,6 +70,14 @@ function addToHistory(expression, result) {
   historyEntries.appendChild(p);
 }
 
+function ans() {
+  if (history.length > 0) {
+    const lastEntry = history[history.length - 1];
+    const lastResult = lastEntry.split("=")[1].trim();
+    display.value += lastResult; 
+  }
+}
+
 
 function clearHistory() {
   history = [];
