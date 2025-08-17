@@ -222,11 +222,11 @@ function evaluatePostfix(tokens,angleMode) {
     } 
     else if (token === "sqrt") {
       const a = stack.pop();
-      stack.push(Math.sqrt(a));
+      stack.push(sqrt(a));
     } 
     else if (token === "cbrt") {
     const a = stack.pop();
-    stack.push(Math.cbrt(a));   
+    stack.push(cbrt(a));   
     }
 
     else if (["sin","cos","tan","asin","acos","atan","ln","log"].includes(token)) {
@@ -234,30 +234,30 @@ function evaluatePostfix(tokens,angleMode) {
   
       switch(token) {
     case "sin":
-        stack.push(Math.sin(angleMode === "deg" ? toRadians(a) : a));
+        stack.push(sin(angleMode === "deg" ? toRadians(a) : a));
         break;
     case "cos":
-        stack.push(Math.cos(angleMode === "deg" ? toRadians(a) : a));
+        stack.push(cos(angleMode === "deg" ? toRadians(a) : a));
         break;
     case "tan":
-        stack.push(Math.tan(angleMode === "deg" ? toRadians(a) : a));
+        stack.push(tan(angleMode === "deg" ? toRadians(a) : a));
         break;
 
     case "asin":
-        stack.push(angleMode === "deg" ? toDegrees(Math.asin(a)) : Math.asin(a));
+        stack.push(angleMode === "deg" ? toDegrees(asin(a)) : asin(a));
         break;
     case "acos":
-        stack.push(angleMode === "deg" ? toDegrees(Math.acos(a)) : Math.acos(a));
+        stack.push(angleMode === "deg" ? toDegrees(acos(a)) : acos(a));
         break;
     case "atan":
-        stack.push(angleMode === "deg" ? toDegrees(Math.atan(a)) : Math.atan(a));
+        stack.push(angleMode === "deg" ? toDegrees(atan(a)) : atan(a));
         break;
 
     case "ln":
-        stack.push(Math.log(a));
+        stack.push(ln(a));
         break;
     case "log":
-        stack.push(Math.log10(a));
+        stack.push(log(a));
         break;
 }
 
@@ -272,7 +272,7 @@ function evaluatePostfix(tokens,angleMode) {
         case "-": stack.push(a - b); break;
         case "*": stack.push(a * b); break;
         case "/": stack.push(a / b); break;
-        case "power": stack.push(Math.pow(a, b)); break;
+        case "power": stack.push(pow(a, b)); break;
         default: throw "Unknown operator " + token;
       }
     }
@@ -283,10 +283,96 @@ function evaluatePostfix(tokens,angleMode) {
 }
 
 function toRadians(deg) {
-  return deg * Math.PI / 180;
+  return deg * 3.141592653589793 / 180;
 }
 
 function toDegrees(rad) {
-    return rad * 180 / Math.PI;
+    return rad * 180 / 3.141592653589793;
 }
 
+function sin(x){
+  let term = x; 
+    let sum = x; 
+    for (let i = 1; i < 10; i++) {
+        term *= -1 * x * x / ((2*i) * (2*i+1));
+        sum += term;
+    }
+    return sum;
+}
+
+function cos(x){
+  let term = 1;
+    let sum = 1;
+    for (let i = 1; i < 10; i++) {
+        term *= -1 * x * x / ((2*i-1) * (2*i));
+        sum += term;
+    }
+    return sum;
+}
+
+function tan(x){
+  return sin(x) / cos(x);
+}
+
+function asin(a){
+  if (x < -1 || x > 1) return NaN;
+  return atan(x / sqrt(1 - x*x));
+}
+
+function acos(a){
+  if (x < -1 || x > 1) return NaN;
+    return 3.141592653589793 / 2 - asin(x);
+}
+
+function atan(x){
+  let term = x;
+    let sum = x;
+    for (let i = 1; i < 10; i++) {
+        term *= -1 * x * x;
+        sum += term / (2*i+1);
+    }
+    return sum;
+}
+
+function log(a){
+  return ln(a) / ln(10);
+}
+
+function ln(a){
+  if (a <= 0) return NaN;
+    let y = (a - 1) / (a + 1);
+    let sum = 0;
+    for (let i = 0; i < 10; i++) {
+        let term = (1 / (2*i+1)) * Math.pow(y, 2*i+1); // need pow
+        sum += term;
+    }
+    return 2 * sum;
+}
+
+function sqrt(n) {
+    if (n < 0) return NaN;
+    let x = n;
+    for (let i = 0; i < 20; i++) {
+        x = 0.5 * (x + n / x);
+    }
+    return x;
+}
+
+function cbrt(n) {
+    if (n === 0) return 0;
+    let x = n; 
+    for (let i = 0; i < 20; i++) {
+        x = (2 * x + n / (x * x)) / 3;
+    }
+    return x;
+}
+
+function pow(base, exp) {
+    if (exp === 0) return 1;
+    let result = 1;
+    let positiveExp = exp > 0 ? exp : -exp;
+    for (let i = 0; i < positiveExp; i++) {
+        result *= base;
+    }
+    return exp > 0 ? result : 1 / result;
+}
