@@ -148,11 +148,11 @@ button:hover {
   font-size: 14px;
   color: #333;
   overflow-y: auto;
-  max-height: 110px; /* Leave room for the clear button */
+  max-height: 110px; 
   padding: 8px;
   text-align: right;
   box-sizing: border-box;
-  margin-left: 0; /* remove margin to avoid overflow */
+  margin-left: 0; 
 }
 
 #history-entries p {
