@@ -322,25 +322,32 @@ function tan(x){
   return sin(x) / cos(x);
 }
 
-function asin(a){
+function asin(x){
   if (x < -1 || x > 1) return NaN;
+  if (x === 1) return 3.141592653589793/2;   
+  if (x === -1) return -3.141592653589793/2; 
   return atan(x / sqrt(1 - x*x));
 }
 
-function acos(a){
+function acos(x){
   if (x < -1 || x > 1) return NaN;
-    return 3.141592653589793 / 2 - asin(x);
+  if (x === 1) return 0;           
+  if (x === -1) return 3.141592653589793;    
+  return 3.141592653589793/2 - asin(x);
 }
 
 function atan(x){
+  if (x > 1) return 3.141592653589793/2 - atan(1/x);
+  if (x < -1) return -3.141592653589793/2 - atan(1/x);
   let term = x;
-    let sum = x;
-    for (let i = 1; i < 10; i++) {
-        term *= -1 * x * x;
-        sum += term / (2*i+1);
-    }
-    return sum;
+  let sum = x;
+  for (let i = 1; i < 20; i++) { 
+      term *= -1 * x * x;
+      sum += term / (2*i+1);
+  }
+  return sum;
 }
+
 
 function log(a){
   return ln(a) / ln(10);
@@ -351,7 +358,7 @@ function ln(a){
     let y = (a - 1) / (a + 1);
     let sum = 0;
     for (let i = 0; i < 10; i++) {
-        let term = (1 / (2*i+1)) * Math.pow(y, 2*i+1); // need pow
+        let term = (1 / (2*i+1)) * pow(y, 2*i+1); 
         sum += term;
     }
     return 2 * sum;
