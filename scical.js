@@ -101,7 +101,6 @@ function clearDisplay() {
 function evaluate(expr,angleMode){
   const tokensbeforemap=tokenize(expr);
   const tokens=maptoken(tokensbeforemap);
-  if(tokens[0]==="-") tokens.unshift("0");
   const postfixTokens = infixToPostfix(tokens);
   const result = evaluatePostfix(postfixTokens,angleMode);
   return result;
@@ -112,6 +111,7 @@ function precedence(op){
   if(op==="*" || op==="/") return 2;
   if(op==="power") return 3;
   if(op==="factorial" || op==="sqrt" || op==="sin" || op==="cos" || op==="tan" || op==="asin" || op==="acos" || op==="atan" || op==="sqrt" || op==="ln" || op==="log" || op==="cbrt") return 4;
+  if (op === "u-" || op === "u+") return 5;
   return 0;
 }
 function tokenize(expr){
@@ -138,8 +138,10 @@ function maptoken(tokens){
       else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
             tokens[i] = "u-"; 
 
-      else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
-            tokens[i] = "u+"; 
+      else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) {
+            tokens.splice(i, 1);
+            i--;
+      }
         
       else continue;
     }
@@ -155,10 +157,6 @@ function infixToPostfix(tokens) {
 
     if (/^\d+(\.\d+)?$/.test(token)) {
       output.push(token);
-    }
-
-     else if (token === "-" && (i === 0 || ["+","-","*","/","^","("].includes(tokens[i-1]))) {
-      stack.push("u-"); 
     }
 
     else if (
@@ -216,11 +214,7 @@ function evaluatePostfix(tokens,angleMode) {
       const a = stack.pop();
       stack.push(-a);
     } 
-    else if (token === "u+") {
-      
-      const a = stack.pop();
-      stack.push(a);
-    } 
+  
     else if (token === "factorial") {
       const a = stack.pop();
       if (a < 0 || !Number.isInteger(a)) throw "Invalid factorial";
@@ -260,7 +254,6 @@ function evaluatePostfix(tokens,angleMode) {
     case "atan":
         stack.push(angleMode === "deg" ? toDegrees(atan(a)) : atan(a));
         break;
-
     case "ln":
         stack.push(ln(a));
         break;
@@ -269,7 +262,7 @@ function evaluatePostfix(tokens,angleMode) {
         break;
 }
 
-    } 
+ } 
 
     else {
      
@@ -281,7 +274,6 @@ function evaluatePostfix(tokens,angleMode) {
         case "*": stack.push(a * b); break;
         case "/": stack.push(a / b); break;
         case "power": stack.push(pow(a, b)); break;
-        default: throw "Unknown operator " + token;
       }
     }
   }
