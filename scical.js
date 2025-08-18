@@ -13,7 +13,7 @@ function append(value) {
 }
 
 function calculate() {
-  const angleMode=document.querySelector('input[name="angleMode"]:checked').value;
+  const angleMode = document.querySelector('input[name="angleMode"]:checked').value;
   const expr = display.value;
   if (!expr.trim()) return;
   if (hasInvalidChars(expr)) {
@@ -21,7 +21,7 @@ function calculate() {
     return;
   }
   try {
-    const result = evaluate(expr,angleMode);
+    const result = evaluate(expr, angleMode);
     displayResult.textContent = result;
     addToHistory(expr, result);
     display.value = "";
@@ -35,9 +35,9 @@ function hasInvalidChars(expr) {
   if (!validChars.test(expr)) return true;
 
   const allowedFunctions = [
-    "sin","cos","tan",
-    "asin","acos","atan",
-    "ln","log"
+    "sin", "cos", "tan",
+    "asin", "acos", "atan",
+    "ln", "log"
   ];
 
   const allowedConstants = ["e", "π"];
@@ -46,9 +46,9 @@ function hasInvalidChars(expr) {
 
   const words = expr.match(/[A-Za-zπ]+/g) || [];
   for (const w of words) {
-    if (!allowedWords.has(w)) return true; 
+    if (!allowedWords.has(w)) return true;
   }
-  return false; 
+  return false;
 }
 
 
@@ -74,7 +74,7 @@ function ans() {
   if (history.length > 0) {
     const lastEntry = history[history.length - 1];
     const lastResult = lastEntry.split("=")[1].trim();
-    display.value += lastResult; 
+    display.value += lastResult;
   }
 }
 
@@ -82,8 +82,8 @@ function ans() {
 function clearHistory() {
   history = [];
   historyEntries.innerHTML = "";
-  clearHistoryBtn.style.display = "none"; 
-  historyBox.style.display = "none";      
+  clearHistoryBtn.style.display = "none";
+  historyBox.style.display = "none";
 }
 
 function deleteLast() {
@@ -98,54 +98,54 @@ function clearDisplay() {
 
 //expression evaluation
 
-function evaluate(expr,angleMode){
-  const tokensbeforemap=tokenize(expr);
-  const tokens=maptoken(tokensbeforemap);
+function evaluate(expr, angleMode) {
+  const tokensbeforemap = tokenize(expr);
+  const tokens = maptoken(tokensbeforemap);
   const postfixTokens = infixToPostfix(tokens);
-  const result = evaluatePostfix(postfixTokens,angleMode);
+  const result = evaluatePostfix(postfixTokens, angleMode);
   return result;
 }
 
-function precedence(op){
-  if(op==="+" || op==="-") return 1;
-  if(op==="*" || op==="/") return 2;
-  if(op==="power") return 3;
-  if(op==="factorial" || op==="sqrt" || op==="sin" || op==="cos" || op==="tan" || op==="asin" || op==="acos" || op==="atan" || op==="sqrt" || op==="ln" || op==="log" || op==="cbrt") return 4;
+function precedence(op) {
+  if (op === "+" || op === "-") return 1;
+  if (op === "*" || op === "/") return 2;
+  if (op === "power") return 3;
+  if (op === "factorial" || op === "sqrt" || op === "sin" || op === "cos" || op === "tan" || op === "asin" || op === "acos" || op === "atan" || op === "sqrt" || op === "ln" || op === "log" || op === "cbrt") return 4;
   if (op === "u-" || op === "u+") return 5;
   return 0;
 }
-function tokenize(expr){
-    const tokens = expr.match(
+function tokenize(expr) {
+  const tokens = expr.match(
     /(\d+(\.\d+)?)|[+\-*/^%!√∛()]|sin|cos|tan|asin|acos|atan|ln|log|π|e/g);
-    return tokens || [];
+  return tokens || [];
 }
 
-function maptoken(tokens){
-    const mapping={
-      '^': "power", 
-      '√':"sqrt",
-      'π':3.14159265,
-      'e':2.7182818, 
-      '!':"factorial",
-      '∛':"cbrt"
+function maptoken(tokens) {
+  const mapping = {
+    '^': "power",
+    '√': "sqrt",
+    'π': 3.14159265,
+    'e': 2.7182818,
+    '!': "factorial",
+    '∛': "cbrt"
+  }
+  for (let i = 0; i < tokens.length; i++) {
+
+    const token = tokens[i];
+    if (token === '^' || token === '√' || token === 'π' || token === 'e' || token === '!' || token === '∛')
+      tokens[i] = mapping[tokens[i]];
+
+    else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1])))
+      tokens[i] = "u-";
+
+    else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) {
+      tokens.splice(i, 1);
+      i--;
     }
-    for(let i=0;i<tokens.length;i++){
 
-      const token=tokens[i];
-      if(token==='^' || token==='√' || token==='π' || token==='e' || token==='!' || token==='∛') 
-        tokens[i]=mapping[tokens[i]];
-
-      else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) 
-            tokens[i] = "u-"; 
-
-      else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) {
-            tokens.splice(i, 1);
-            i--;
-      }
-        
-      else continue;
-    }
-    return tokens;
+    else continue;
+  }
+  return tokens;
 }
 
 function infixToPostfix(tokens) {
@@ -160,8 +160,8 @@ function infixToPostfix(tokens) {
     }
 
     else if (
-      ["sin","cos","tan","asin","acos","atan",
-       "ln","log","sqrt","factorial","cbrt"].includes(token)
+      ["sin", "cos", "tan", "asin", "acos", "atan",
+        "ln", "log", "sqrt", "factorial", "cbrt"].includes(token)
     ) {
       stack.push(token);
     }
@@ -174,11 +174,11 @@ function infixToPostfix(tokens) {
       while (stack.length && stack[stack.length - 1] !== "(") {
         output.push(stack.pop());
       }
-      stack.pop(); 
+      stack.pop();
 
-      if (stack.length && 
-         ["sin","cos","tan","asin","acos","atan",
-          "ln","log","sqrt","factorial","u-","cbrt"].includes(stack[stack.length - 1])) {
+      if (stack.length &&
+        ["sin", "cos", "tan", "asin", "acos", "atan",
+          "ln", "log", "sqrt", "factorial", "u-", "cbrt"].includes(stack[stack.length - 1])) {
         output.push(stack.pop());
       }
     }
@@ -201,74 +201,74 @@ function infixToPostfix(tokens) {
   return output;
 }
 
-function evaluatePostfix(tokens,angleMode) {
+function evaluatePostfix(tokens, angleMode) {
   const stack = [];
 
   for (const token of tokens) {
     if (/^\d+(\.\d+)?$/.test(token)) {
-      
+
       stack.push(parseFloat(token));
-    } 
+    }
     else if (token === "u-") {
-      
+
       const a = stack.pop();
       stack.push(-a);
-    } 
-  
+    }
+
     else if (token === "factorial") {
       const a = stack.pop();
       if (a < 0 || !Number.isInteger(a)) throw "Invalid factorial";
       let res = 1;
       for (let i = 1; i <= a; i++) res *= i;
       stack.push(res);
-    } 
+    }
     else if (token === "sqrt") {
       const a = stack.pop();
       stack.push(sqrt(a));
-    } 
+    }
     else if (token === "cbrt") {
-    const a = stack.pop();
-    stack.push(cbrt(a));   
+      const a = stack.pop();
+      stack.push(cbrt(a));
     }
 
-    else if (["sin","cos","tan","asin","acos","atan","ln","log"].includes(token)) {
+    else if (["sin", "cos", "tan", "asin", "acos", "atan", "ln", "log"].includes(token)) {
       const a = parseFloat(stack.pop());
-  
-      switch(token) {
-    case "sin":
-        stack.push(sin(angleMode === "deg" ? toRadians(a) : a));
-        break;
-    case "cos":
-        stack.push(cos(angleMode === "deg" ? toRadians(a) : a));
-        break;
-    case "tan":
-        stack.push(tan(angleMode === "deg" ? toRadians(a) : a));
-        break;
 
-    case "asin":
-        stack.push(angleMode === "deg" ? toDegrees(asin(a)) : asin(a));
-        break;
-    case "acos":
-        stack.push(angleMode === "deg" ? toDegrees(acos(a)) : acos(a));
-        break;
-    case "atan":
-        stack.push(angleMode === "deg" ? toDegrees(atan(a)) : atan(a));
-        break;
-    case "ln":
-        stack.push(ln(a));
-        break;
-    case "log":
-        stack.push(log(a));
-        break;
-}
+      switch (token) {
+        case "sin":
+          stack.push(sin(angleMode === "deg" ? toRadians(a) : a));
+          break;
+        case "cos":
+          stack.push(cos(angleMode === "deg" ? toRadians(a) : a));
+          break;
+        case "tan":
+          stack.push(tan(angleMode === "deg" ? toRadians(a) : a));
+          break;
 
- } 
+        case "asin":
+          stack.push(angleMode === "deg" ? toDegrees(asin(a)) : asin(a));
+          break;
+        case "acos":
+          stack.push(angleMode === "deg" ? toDegrees(acos(a)) : acos(a));
+          break;
+        case "atan":
+          stack.push(angleMode === "deg" ? toDegrees(atan(a)) : atan(a));
+          break;
+        case "ln":
+          stack.push(ln(a));
+          break;
+        case "log":
+          stack.push(log(a));
+          break;
+      }
+
+    }
 
     else {
-     
+
       const b = parseFloat(stack.pop());
       const a = parseFloat(stack.pop());
-      switch(token) {
+      switch (token) {
         case "+": stack.push(a + b); break;
         case "-": stack.push(a - b); break;
         case "*": stack.push(a * b); break;
@@ -287,99 +287,106 @@ function toRadians(deg) {
 }
 
 function toDegrees(rad) {
-    return rad * 180 / 3.141592653589793;
+  return rad * 180 / 3.141592653589793;
 }
 
-function sin(x){
-  let term = x; 
-    let sum = x; 
-    for (let i = 1; i < 10; i++) {
-        term *= -1 * x * x / ((2*i) * (2*i+1));
-        sum += term;
-    }
-    return sum;
-}
-
-function cos(x){
-  let term = 1;
-    let sum = 1;
-    for (let i = 1; i < 10; i++) {
-        term *= -1 * x * x / ((2*i-1) * (2*i));
-        sum += term;
-    }
-    return sum;
-}
-
-function tan(x){
-  return sin(x) / cos(x);
-}
-
-function asin(x){
-  if (x < -1 || x > 1) return NaN;
-  if (x === 1) return 3.141592653589793/2;   
-  if (x === -1) return -3.141592653589793/2; 
-  return atan(x / sqrt(1 - x*x));
-}
-
-function acos(x){
-  if (x < -1 || x > 1) return NaN;
-  if (x === 1) return 0;           
-  if (x === -1) return 3.141592653589793;    
-  return 3.141592653589793/2 - asin(x);
-}
-
-function atan(x){
-  if (x > 1) return 3.141592653589793/2 - atan(1/x);
-  if (x < -1) return -3.141592653589793/2 - atan(1/x);
+function sin(x) {
   let term = x;
   let sum = x;
-  for (let i = 1; i < 20; i++) { 
-      term *= -1 * x * x;
-      sum += term / (2*i+1);
+  for (let i = 1; i < 10; i++) {
+    term *= -1 * x * x / ((2 * i) * (2 * i + 1));
+    sum += term;
+  }
+  return sum;
+}
+
+function cos(x) {
+  let term = 1;
+  let sum = 1;
+  for (let i = 1; i < 10; i++) {
+    term *= -1 * x * x / ((2 * i - 1) * (2 * i));
+    sum += term;
+  }
+  return sum;
+}
+
+function tan(x) {
+  let c = cos(x);
+  if (absolute(c) < 1e-12) return Infinity;
+  return sin(x) / c;
+}
+
+function absolute(c) {
+  if (c < 0) return -c;
+  else return c;
+}
+
+function asin(x) {
+  if (x < -1 || x > 1) return NaN;
+  if (x === 1) return 3.141592653589793 / 2;
+  if (x === -1) return -3.141592653589793 / 2;
+  return atan(x / sqrt(1 - x * x));
+}
+
+function acos(x) {
+  if (x < -1 || x > 1) return NaN;
+  if (x === 1) return 0;
+  if (x === -1) return 3.141592653589793;
+  return 3.141592653589793 / 2 - asin(x);
+}
+
+function atan(x) {
+  if (x > 1) return 3.141592653589793 / 2 - atan(1 / x);
+  if (x < -1) return -3.141592653589793 / 2 - atan(1 / x);
+  let term = x;
+  let sum = x;
+  for (let i = 1; i < 20; i++) {
+    term *= -1 * x * x;
+    sum += term / (2 * i + 1);
   }
   return sum;
 }
 
 
-function log(a){
+function log(a) {
   return ln(a) / ln(10);
 }
 
-function ln(a){
+function ln(a) {
   if (a <= 0) return NaN;
-    let y = (a - 1) / (a + 1);
-    let sum = 0;
-    for (let i = 0; i < 10; i++) {
-        let term = (1 / (2*i+1)) * pow(y, 2*i+1); 
-        sum += term;
-    }
-    return 2 * sum;
+  let y = (a - 1) / (a + 1);
+  let sum = 0;
+  for (let i = 0; i < 10; i++) {
+    let term = (1 / (2 * i + 1)) * pow(y, 2 * i + 1);
+    sum += term;
+  }
+  return 2 * sum;
 }
 
 function sqrt(n) {
-    if (n < 0) return NaN;
-    let x = n;
-    for (let i = 0; i < 20; i++) {
-        x = 0.5 * (x + n / x);
-    }
-    return x;
+  if (n < 0) return NaN;
+  let x = n;
+  for (let i = 0; i < 20; i++) {
+    x = 0.5 * (x + n / x);
+  }
+  return x;
 }
 
 function cbrt(n) {
-    if (n === 0) return 0;
-    let x = n; 
-    for (let i = 0; i < 20; i++) {
-        x = (2 * x + n / (x * x)) / 3;
-    }
-    return x;
+  if (n === 0) return 0;
+  let x = n;
+  for (let i = 0; i < 20; i++) {
+    x = (2 * x + n / (x * x)) / 3;
+  }
+  return x;
 }
 
 function pow(base, exp) {
-    if (exp === 0) return 1;
-    let result = 1;
-    let positiveExp = exp > 0 ? exp : -exp;
-    for (let i = 0; i < positiveExp; i++) {
-        result *= base;
-    }
-    return exp > 0 ? result : 1 / result;
+  if (exp === 0) return 1;
+  let result = 1;
+  let positiveExp = exp > 0 ? exp : -exp;
+  for (let i = 0; i < positiveExp; i++) {
+    result *= base;
+  }
+  return exp > 0 ? result : 1 / result;
 }
