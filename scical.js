@@ -31,16 +31,7 @@ function calculate() {
 }
 
 function hasInvalidChars(expr) {
-  const validChars = /^[0-9+\-*/^%!().√∛πe\sA-Za-z]*$/;
-  if (!validChars.test(expr)) return true;
-
-  const allowedFunctions = [
-    "sin", "cos", "tan",
-    "asin", "acos", "atan",
-    "ln", "log"
-  ];
-
-  const allowedConstants = ["e", "π"];
+   if (!validChars.test(expr)) return true;
 
   const allowedWords = new Set([...allowedFunctions, ...allowedConstants]);
 
@@ -121,14 +112,7 @@ function tokenize(expr) {
 }
 
 function maptoken(tokens) {
-  const mapping = {
-    '^': "power",
-    '√': "sqrt",
-    'π': 3.14159265,
-    'e': 2.7182818,
-    '!': "factorial",
-    '∛': "cbrt"
-  }
+  
   for (let i = 0; i < tokens.length; i++) {
 
     const token = tokens[i];
@@ -283,11 +267,11 @@ function evaluatePostfix(tokens, angleMode) {
 }
 
 function toRadians(deg) {
-  return deg * 3.141592653589793 / 180;
+  return deg * pi / 180;
 }
 
 function toDegrees(rad) {
-  return rad * 180 / 3.141592653589793;
+  return rad * 180 / pi;
 }
 
 function sin(x) {
@@ -312,7 +296,7 @@ function cos(x) {
 
 function tan(x) {
   let c = cos(x);
-  if (absolute(c) < 1e-12) return Infinity;
+  if (absolute(c) < epsilon) return Infinity;
   return sin(x) / c;
 }
 
@@ -323,21 +307,21 @@ function absolute(c) {
 
 function asin(x) {
   if (x < -1 || x > 1) return NaN;
-  if (x === 1) return 3.141592653589793 / 2;
-  if (x === -1) return -3.141592653589793 / 2;
+  if (x === 1) return pi / 2;
+  if (x === -1) return -pi / 2;
   return atan(x / sqrt(1 - x * x));
 }
 
 function acos(x) {
   if (x < -1 || x > 1) return NaN;
   if (x === 1) return 0;
-  if (x === -1) return 3.141592653589793;
-  return 3.141592653589793 / 2 - asin(x);
+  if (x === -1) return pi;
+  return pi / 2 - asin(x);
 }
 
 function atan(x) {
-  if (x > 1) return 3.141592653589793 / 2 - atan(1 / x);
-  if (x < -1) return -3.141592653589793 / 2 - atan(1 / x);
+  if (x > 1) return pi / 2 - atan(1 / x);
+  if (x < -1) return -pi / 2 - atan(1 / x);
   let term = x;
   let sum = x;
   for (let i = 1; i < 20; i++) {

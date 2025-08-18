@@ -32,7 +32,7 @@ convertBtn.addEventListener("click", () => {
 });
 
 function isValidNumberForBase(number, fromBase) {
-    const digits = "0123456789ABCDEF";
+    
     number = number.toUpperCase();
 
     for (let i = 0; i < number.length; i++) {
@@ -71,12 +71,6 @@ function binaryConversion(fromBase,toBase,number){
 
 function todecimal(fromBase,number){
     numstr=number.toString().toUpperCase();
-    const digitMap={
-        '0': 0, '1': 1, '2': 2, '3': 3,
-        '4': 4, '5': 5, '6': 6, '7': 7,
-        '8': 8, '9': 9, 'A': 10, 'B': 11,
-        'C': 12, 'D': 13, 'E': 14, 'F': 15
-    }
 
     function power(i){
         let answer=1;
@@ -129,7 +123,6 @@ function octalConversion(toBase,number){
 }
 
 function decimalConversion(toBase,number){
-    const digit="0123456789ABCDEF";
     let integerpart=(number)-(number%1);
     let decimalpart=number-integerpart;
     let result="";

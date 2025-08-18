@@ -3,7 +3,6 @@ const toCurrency = document.getElementById("toCurrency");
 const convertBtn = document.getElementById("convertBtn");
 const result = document.getElementById("result");
 
-const currencies = ["USD", "EUR", "INR", "GBP", "JPY", "AUD", "CAD", "SGD", "CHF", "CNY"];
 
 function createOption(value) {
   const option = document.createElement("option");
