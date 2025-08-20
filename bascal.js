@@ -57,8 +57,8 @@ function addToHistory(expression, result) {
 function clearHistory() {
   history = [];
   historyEntries.innerHTML = "";
-  clearHistoryBtn.style.display = "none"; 
-  historyBox.style.display = "none";      
+  clearHistoryBtn.style.display = "none";
+  historyBox.style.display = "none";
 }
 
 function deleteLast() {
@@ -67,23 +67,23 @@ function deleteLast() {
 }
 
 function hasInvalidChars(expr) {
-    return /[+\-*/]{2,}/.test(input) || /^[*/]/.test(input) || /[+\-*/]$/.test(input);
+  return /[+\-*/]{2,}/.test(input) || /^[*/]/.test(input) || /[+\-*/]$/.test(input);
 }
 
 
 //expression evaluation
 
-function evaluate(expr){
-  const tokens=tokenize(expr);
-  if(tokens[0]==="-") tokens.unshift("0");
+function evaluate(expr) {
+  const tokens = tokenize(expr);
+  if (tokens[0] === "-") tokens.unshift("0");
   const postfixTokens = infixToPostfix(tokens);
   const result = evaluatePostfix(postfixTokens);
   return result;
 }
 
-function precedence(op){
-  if(op==="+" || op==="-") return 1;
-  if(op==="*" || op==="/") return 2;
+function precedence(op) {
+  if (op === "+" || op === "-") return 1;
+  if (op === "*" || op === "/") return 2;
   return 0;
 }
 
@@ -106,40 +106,32 @@ function infixToPostfix(tokens) {
   const stack = [];
   const output = [];
 
-  for (const token of tokens) 
-    {
+  for (const token of tokens) {
     if (/^\d+(\.\d+)?$/.test(token)
-)
-    {   
+    ) {
       output.push(token);
-    } 
-    
-    else if (token === '(') 
-    {
+    }
+
+    else if (token === '(') {
       stack.push(token);
-    } 
-    
-    else if (token === ')') 
-    {
-      while (stack.length && stack[stack.length - 1] !== '(')
-      {
+    }
+
+    else if (token === ')') {
+      while (stack.length && stack[stack.length - 1] !== '(') {
         output.push(stack.pop());
       }
-      stack.pop(); 
-    } 
-    else
-   {
-      
-      while ( stack.length && precedence(stack[stack.length - 1]) >= precedence(token))
-      {
+      stack.pop();
+    }
+    else {
+
+      while (stack.length && precedence(stack[stack.length - 1]) >= precedence(token)) {
         output.push(stack.pop());
       }
       stack.push(token);
     }
   }
 
-  while (stack.length) 
-  {
+  while (stack.length) {
     output.push(stack.pop());
   }
 
@@ -149,14 +141,11 @@ function infixToPostfix(tokens) {
 function evaluatePostfix(tokens) {
   const stack = [];
 
-  for (const token of tokens) 
-  {
-    if (/^\d+(\.\d+)?$/.test(token)) 
-    {
+  for (const token of tokens) {
+    if (/^\d+(\.\d+)?$/.test(token)) {
       stack.push(token);
     }
-    else
-    {
+    else {
       const b = stack.pop();
       const a = stack.pop();
       stack.push(applyOp(a, b, token));

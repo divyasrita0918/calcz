@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Basic Calculator</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="calculator">
     <div class="display" id="display">0</div>
@@ -14,10 +16,10 @@
 
     <button class="history-toggle" onclick="toggleHistory()">History</button>
 
-  <div id="history">
-  <button class="clear-history" onclick="clearHistory()">Clear</button>
-  <div id="history-entries"></div> 
-</div>
+    <div id="history">
+      <button class="clear-history" onclick="clearHistory()">Clear</button>
+      <div id="history-entries"></div>
+    </div>
 
 
 
@@ -27,7 +29,7 @@
       <button class="btn1" onclick="append('9')">9</button>
       <button class="btn clear" onclick="clearDisplay()">C</button>
 
-      
+
 
       <button class="btn1" onclick="append('4')">4</button>
       <button class="btn1" onclick="append('5')">5</button>
@@ -48,11 +50,12 @@
       <button class="btn1" onclick="append(')')">)</button>
       <button class="btn equal" onclick="calculate()">=</button>
       <button class="btn delete" onclick="deleteLast()">⌫</button>
-      
+
 
     </div>
   </div>
 
   <script src="bascal.js"></script>
 </body>
+
 </html>

@@ -1,12 +1,12 @@
-document.getElementById("btn1").addEventListener("click",function(){
-    window.location.href="scical.html";
+document.getElementById("btn1").addEventListener("click", function () {
+    window.location.href = "scical.html";
 })
-document.getElementById("btn2").addEventListener("click",function(){
-    window.location.href="bascal.html";
+document.getElementById("btn2").addEventListener("click", function () {
+    window.location.href = "bascal.html";
 })
-document.getElementById("btn3").addEventListener("click",function(){
-    window.location.href="radix.html";
+document.getElementById("btn3").addEventListener("click", function () {
+    window.location.href = "radix.html";
 })
-document.getElementById("btn4").addEventListener("click",function(){
-    window.location.href="currency.html";
+document.getElementById("btn4").addEventListener("click", function () {
+    window.location.href = "currency.html";
 })

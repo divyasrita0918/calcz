@@ -31,7 +31,7 @@ function calculate() {
 }
 
 function hasInvalidChars(expr) {
-   if (!validChars.test(expr)) return true;
+  if (!validChars.test(expr)) return true;
 
   const allowedWords = new Set([...allowedFunctions, ...allowedConstants]);
 
@@ -101,7 +101,7 @@ function precedence(op) {
   if (op === "+" || op === "-") return 1;
   if (op === "*" || op === "/") return 2;
   if (op === "power") return 3;
-  if (op === "factorial" || op === "sqrt" || op === "sin" || op === "cos" || op === "tan" || op === "asin" || op === "acos" || op === "atan" || op === "sqrt" || op === "ln" || op === "log" || op === "cbrt") return 4;
+  if (op === "factorial" || op === "sqrt" || op === "sin" || op === "cos" || op === "tan" || op === "asin" || op === "acos" || op === "atan" || op === "sqrt" || op === "ln" || op === "log" || op === "cbrt" || op === "percent") return 4;
   if (op === "u-" || op === "u+") return 5;
   return 0;
 }
@@ -112,11 +112,11 @@ function tokenize(expr) {
 }
 
 function maptoken(tokens) {
-  
+
   for (let i = 0; i < tokens.length; i++) {
 
     const token = tokens[i];
-    if (token === '^' || token === '√' || token === 'π' || token === 'e' || token === '!' || token === '∛')
+    if (token === '^' || token === '√' || token === 'π' || token === 'e' || token === '!' || token === '∛' || token === '%')
       tokens[i] = mapping[tokens[i]];
 
     else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1])))
@@ -213,6 +213,12 @@ function evaluatePostfix(tokens, angleMode) {
     else if (token === "cbrt") {
       const a = stack.pop();
       stack.push(cbrt(a));
+    }
+
+    else if (token === "percent") {
+      const b = stack.pop();
+      const a = stack.pop();
+      stack.push(a % b);
     }
 
     else if (["sin", "cos", "tan", "asin", "acos", "atan", "ln", "log"].includes(token)) {
@@ -366,11 +372,33 @@ function cbrt(n) {
 }
 
 function pow(base, exp) {
+  if (base === 0 && exp <= 0) return NaN;
   if (exp === 0) return 1;
-  let result = 1;
-  let positiveExp = exp > 0 ? exp : -exp;
-  for (let i = 0; i < positiveExp; i++) {
-    result *= base;
+  if (Number.isInteger(exp)) {
+    let result = 1;
+    let positiveExp = exp > 0 ? exp : -exp;
+    for (let i = 0; i < positiveExp; i++) {
+      result *= base;
+    }
+    return exp > 0 ? result : 1 / result;
   }
-  return exp > 0 ? result : 1 / result;
+
+  return exp > 0
+    ? expLn(base, exp)
+    : 1 / expLn(base, -exp);
 }
+
+function expLn(base, exp) {
+  return expSeries(exp * ln(base));
+}
+
+function expSeries(x) {
+  let sum = 1;
+  let term = 1;
+  for (let i = 1; i < 30; i++) {
+    term *= x / i;
+    sum += term;
+  }
+  return sum;
+}
+
