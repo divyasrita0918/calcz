@@ -91,7 +91,7 @@ function clearDisplay() {
 
 function evaluate(expr, angleMode) {
   const tokensbeforemap = tokenize(expr);
-  console.log(tokens);
+
   const tokens = maptoken(tokensbeforemap);
   const postfixTokens = infixToPostfix(tokens);
   const result = evaluatePostfix(postfixTokens, angleMode);
