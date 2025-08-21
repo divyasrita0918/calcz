@@ -108,19 +108,88 @@ function todecimal(fromBase, number) {
 }
 
 function binarytooctalandhexadecimal(toBase, number) {
-    return decimalConversion(toBase, todecimal(2, number));
+    let a;
+    if (toBase === "8") a = 3;
+    else a = 4;
+
+    let parts = number.split(".");
+    let intPart = parts[0];
+    let fracPart = parts.length > 1 ? parts[1] : "";
+
+    while (intPart.length % a !== 0) {
+        intPart = "0" + intPart;
+    }
+
+    let intResult = "";
+    for (let i = 0; i < intPart.length; i += a) {
+        let slice = intPart.slice(i, i + a);
+        if (a === 3)
+            intResult += mapoct[slice];
+        else
+            intResult += maphex[slice];
+    }
+    intResult = intResult.replace(/^0+/, "") || "0";
+
+    let fracResult = "";
+    if (fracPart.length > 0) {
+        while (fracPart.length % a !== 0) {
+            fracPart = fracPart + "0";
+        }
+
+        for (let i = 0; i < fracPart.length; i += a) {
+            let slice = fracPart.slice(i, i + a);
+            if (a === 3)
+                fracResult += mapoct[slice];
+            else
+                fracResult += maphex[slice];
+        }
+
+        fracResult = fracResult.replace(/0+$/, "");
+    }
+
+    return fracResult.length > 0 ? intResult + "." + fracResult : intResult;
 }
+
 
 function octalConversion(toBase, number) {
     switch (toBase) {
         case "10":
             return todecimal(8, number);
         case "2":
-            return decimalConversion(toBase, todecimal(8, number));
+            return ToBinary(8, number);
         case "16":
-            return decimalConversion(toBase, todecimal(8, number));
+            return binarytooctalandhexadecimal(toBase, ToBinary(8, number));
     }
 }
+
+function ToBinary(fromBase, number) {
+    number = number.toUpperCase();
+    let parts = number.split(".");
+    let intPart = parts[0];
+    let fracPart = parts.length > 1 ? parts[1] : "";
+
+    let intResult = "";
+    for (let i = 0; i < intPart.length; i++) {
+        if (fromBase === 8)
+            intResult += octalToBinarymap[intPart[i]];
+        else
+            intResult += hexToBinaryMap[intPart[i]];
+    }
+    intResult = intResult.replace(/^0+/, "") || "0";
+
+    let fracResult = "";
+    for (let i = 0; i < fracPart.length; i++) {
+        if (fromBase === 8)
+            fracResult += octalToBinarymap[fracPart[i]];
+        else
+            fracResult += hexToBinaryMap[fracPart[i]];
+    }
+    fracResult = fracResult.replace(/0+$/, "");
+
+    return fracResult.length > 0 ? intResult + "." + fracResult : intResult;
+}
+
+
 
 function decimalConversion(toBase, number) {
     let integerpart = (number) - (number % 1);
@@ -151,9 +220,9 @@ function decimalConversion(toBase, number) {
 function hexadecimalConversion(toBase, number) {
     switch (toBase) {
         case "2":
-            return decimalConversion(toBase, todecimal(16, number));
+            return ToBinary(16, number);
         case "8":
-            return decimalConversion(toBase, todecimal(16, number));
+            return binarytooctalandhexadecimal(toBase, ToBinary(16, number));
         case "10":
             return todecimal(16, number);
     }
