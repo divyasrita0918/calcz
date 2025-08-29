@@ -1,10 +1,34 @@
-convertBtn.addEventListener("click", () => {
-    const numberInput = document.getElementById("number");
-    const result = document.getElementById("result");
+const numberInput = document.getElementById("number");
+const fromBaseSelect = document.getElementById("fromBase");
+const toBaseSelect = document.getElementById("toBase");
+const validationMsg = document.getElementById("validationMsg");
+const convertBtn = document.getElementById("convertBtn");
+const result = document.getElementById("result");
 
+numberInput.addEventListener("input", () => {
     const number = numberInput.value.trim();
-    const fromBase = document.getElementById("fromBase").value;
-    const toBase = document.getElementById("toBase").value;
+    const fromBase = fromBaseSelect.value;
+
+    if (number === "") {
+        validationMsg.textContent = "";
+        convertBtn.disabled = false; 
+        return;
+    }
+
+    if (!isValidNumberForBase(number, fromBase)) {
+        validationMsg.textContent = `✘ Invalid number for base ${fromBase}`;
+        validationMsg.style.color = "red";
+        convertBtn.disabled = true;
+    } else {
+        validationMsg.textContent = "";
+        convertBtn.disabled = false;
+    }
+});
+
+convertBtn.addEventListener("click", () => {
+    const number = numberInput.value.trim();
+    const fromBase = fromBaseSelect.value;
+    const toBase = toBaseSelect.value;
 
     if (number === "") {
         result.textContent = "Please enter a number.";
@@ -28,6 +52,7 @@ convertBtn.addEventListener("click", () => {
         numberInput.value = "";
     } catch (error) {
         result.textContent = "Error in conversion.";
+        console.log(error);
     }
 });
 
@@ -198,7 +223,7 @@ function decimalConversion(toBase, number) {
     if (integerpart === 0) result = "0";
     else {
         while (integerpart > 0) {
-            result = digit[integerpart % toBase] + result;
+            result = digits[integerpart % toBase] + result;
             integerpart = (integerpart - (integerpart % toBase)) / toBase;
         }
     }
@@ -209,7 +234,7 @@ function decimalConversion(toBase, number) {
         while (decimalpart > 0 && precision > 0) {
             decimalpart *= toBase;
             let digitvalue = decimalpart - (decimalpart % 1);
-            result += digit[digitvalue];
+            result += digits[digitvalue];
             decimalpart = decimalpart - digitvalue;
             precision--;
         }

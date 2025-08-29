@@ -3,7 +3,6 @@ const e = 2.7182818;
 const epsilon = 1e-12;
 
 const validChars = /^[0-9+\-*/^%!().√∛πe\sA-Za-z]*$/;
-
 const allowedFunctions = [
   "sin", "cos", "tan",
   "asin", "acos", "atan",

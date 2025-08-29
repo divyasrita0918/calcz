@@ -7,6 +7,13 @@ const clearHistoryBtn = document.querySelector(".clear-history");
 
 let history = [];
 
+display.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault(); 
+    calculate();
+  }
+});
+
 
 function append(value) {
   display.value += value;
@@ -14,15 +21,20 @@ function append(value) {
 
 function calculate() {
   const angleMode = document.querySelector('input[name="angleMode"]:checked').value;
-  const expr = display.value;
+  let expr = display.value;
   if (!expr.trim()) return;
+  let openBrackets = (expr.match(/\(/g) || []).length;
+  let closeBrackets = (expr.match(/\)/g) || []).length;
+  if (openBrackets > closeBrackets) {
+    expr += ")".repeat(openBrackets - closeBrackets);
+  }
   if (hasInvalidChars(expr)) {
     displayResult.textContent = "Invalid";
     return;
   }
   try {
     const result = evaluate(expr, angleMode);
-    displayResult.textContent = result;
+    displayResult.textContent = result.toFixed(4);
     addToHistory(expr, result);
     display.value = "";
   } catch {
@@ -283,7 +295,7 @@ function toDegrees(rad) {
 function sin(x) {
   let term = x;
   let sum = x;
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 100; i++) {
     term *= -1 * x * x / ((2 * i) * (2 * i + 1));
     sum += term;
   }
@@ -293,7 +305,7 @@ function sin(x) {
 function cos(x) {
   let term = 1;
   let sum = 1;
-  for (let i = 1; i < 10; i++) {
+  for (let i = 1; i < 100; i++) {
     term *= -1 * x * x / ((2 * i - 1) * (2 * i));
     sum += term;
   }
@@ -346,7 +358,7 @@ function ln(a) {
   if (a <= 0) return NaN;
   let y = (a - 1) / (a + 1);
   let sum = 0;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     let term = (1 / (2 * i + 1)) * pow(y, 2 * i + 1);
     sum += term;
   }
@@ -383,9 +395,7 @@ function pow(base, exp) {
     return exp > 0 ? result : 1 / result;
   }
 
-  return exp > 0
-    ? expLn(base, exp)
-    : 1 / expLn(base, -exp);
+  return exp > 0 ? expLn(base, exp) : 1 / expLn(base, -exp);
 }
 
 function expLn(base, exp) {
@@ -395,7 +405,7 @@ function expLn(base, exp) {
 function expSeries(x) {
   let sum = 1;
   let term = 1;
-  for (let i = 1; i < 30; i++) {
+  for (let i = 1; i < 100; i++) {
     term *= x / i;
     sum += term;
   }

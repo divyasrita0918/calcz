@@ -11,6 +11,8 @@ function createOption(value) {
   return option;
 }
 
+const currencies = ["USD", "EUR", "INR", "GBP", "JPY", "AUD", "CAD", "SGD", "CHF", "CNY"];
+
 currencies.forEach(currency => {
   fromCurrency.appendChild(createOption(currency));
   toCurrency.appendChild(createOption(currency));
