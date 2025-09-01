@@ -91,6 +91,8 @@ function binaryConversion(fromBase, toBase, number) {
             return todecimal(fromBase, number);
         case "16":
             return binarytooctalandhexadecimal(toBase, number);
+        default:
+            return number;
     }
 }
 
@@ -184,6 +186,8 @@ function octalConversion(toBase, number) {
             return ToBinary(8, number);
         case "16":
             return binarytooctalandhexadecimal(toBase, ToBinary(8, number));
+        default:
+            return number;
     }
 }
 
@@ -250,5 +254,7 @@ function hexadecimalConversion(toBase, number) {
             return binarytooctalandhexadecimal(toBase, ToBinary(16, number));
         case "10":
             return todecimal(16, number);
+        default:
+            return number;
     }
 }
