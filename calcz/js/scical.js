@@ -34,7 +34,7 @@ function calculate() {
   }
   try {
     const result = evaluate(expr, angleMode);
-    displayResult.textContent = result.toFixed(4);
+    displayResult.textContent = result;
     addToHistory(expr, result);
     display.value = "";
   } catch {
@@ -131,7 +131,7 @@ function maptoken(tokens) {
     if (token === '^' || token === '√' || token === 'π' || token === 'e' || token === '!' || token === '∛' || token === '%')
       tokens[i] = mapping[tokens[i]];
 
-    else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1])))
+    else if (token === '-' && (i === 0 || ["+", "-", "*", "/", "^", "(", "power"].includes(tokens[i - 1])))
       tokens[i] = "u-";
 
     else if (token === '+' && (i === 0 || ["+", "-", "*", "/", "^", "("].includes(tokens[i - 1]))) {
