@@ -1,9 +1,14 @@
+window.onload = function () {
+  history = JSON.parse(localStorage.getItem("calcHistory")) || [];
+  displayHistory();
+};
+
+
 const displayResult = document.getElementById("display");
 const display = document.getElementById("input");
 const historyBox = document.getElementById("history");
 const historyEntries = document.getElementById("history-entries");
 const clearHistoryBtn = document.querySelector(".clear-history");
-
 
 let history = [];
 
@@ -62,16 +67,30 @@ function toggleHistory() {
   } else {
     historyBox.style.display = "flex";
     clearHistoryBtn.style.display = "inline-block";
+    displayHistory();
   }
 }
+
+function displayHistory() {
+  historyEntries.innerHTML = ""; 
+
+  history.forEach(entry => {
+    const p = document.createElement("p");
+    p.textContent = entry;
+    historyEntries.appendChild(p);
+  });
+}
+
 
 function addToHistory(expression, result) {
   const entry = `${expression} = ${result}`;
   history.push(entry);
+  localStorage.setItem("calcHistory", JSON.stringify(history));
   const p = document.createElement("p");
   p.textContent = entry;
   historyEntries.appendChild(p);
 }
+
 
 function ans() {
   if (history.length > 0) {
@@ -84,10 +103,12 @@ function ans() {
 
 function clearHistory() {
   history = [];
+  localStorage.removeItem("calcHistory"); 
   historyEntries.innerHTML = "";
   clearHistoryBtn.style.display = "none";
   historyBox.style.display = "none";
 }
+
 
 function deleteLast() {
   const currentValue = display.value;
