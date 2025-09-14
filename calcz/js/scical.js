@@ -410,9 +410,7 @@ function pow(base, exp) {
   if (Number.isInteger(exp)) {
     let result = 1;
     let positiveExp = exp > 0 ? exp : -exp;
-    for (let i = 0; i < positiveExp; i++) {
-      result *= base;
-    }
+    result=base**positiveExp;
     return exp > 0 ? result : 1 / result;
   }
 

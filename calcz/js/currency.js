@@ -57,6 +57,8 @@ convertBtn.addEventListener("click", async () => {
     return;
   }
 
+  result.innerHTML = `<i>Loading...</i>`;
+
   try {
     const rates = await fetchRates(from);
     const rate = rates[to];
