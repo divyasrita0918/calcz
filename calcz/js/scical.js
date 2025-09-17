@@ -61,15 +61,16 @@ function hasInvalidChars(expr) {
 
 
 function toggleHistory() {
-  if (historyBox.style.display === "flex") {
-    historyBox.style.display = "none";
-    clearHistoryBtn.style.display = "none";
+  const overlay = document.getElementById("history-overlay");
+
+  if (overlay.style.display === "flex") {
+    overlay.style.display = "none";   
   } else {
-    historyBox.style.display = "flex";
-    clearHistoryBtn.style.display = "inline-block";
-    displayHistory();
+    overlay.style.display = "flex";  
+    displayHistory();                 
   }
 }
+
 
 function displayHistory() {
   historyEntries.innerHTML = ""; 

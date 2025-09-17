@@ -118,47 +118,43 @@ button:hover {
   background-color: #d63384;
 }
 
-#history {
-  display: none;
-  justify-content: flex-start;
+#history-overlay {
+  display: none; 
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); 
+  backdrop-filter: blur(3px); 
+  justify-content: center;
   align-items: center;
-  padding: 10px;
-  border: 1px solid #ffb6c1;
-  border-radius: 10px;
-  background-color: #fff0f6;
-  margin-bottom: 10px;
+  z-index: 999;
+}
+
+.history-modal {
+  background: #fff0f6;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  max-height: 400px;
   overflow-y: auto;
-  max-height: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  text-align: center;
 }
 
-.clear-history {
+.clear-history, .close-history {
   background-color: #ff69b4;
-  border: 1px solid #ffb6c1;
-  padding: 5px;
-  border-radius: 10px;
-  font-size: 10px;
+  border: none;
   color: white;
+  padding: 6px 12px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.clear-history:hover {
+.clear-history:hover, .close-history:hover {
   background-color: #d63384;
 }
 
-#history-entries {
-  flex-grow: 1;
-  font-size: 14px;
-  color: #333;
-  overflow-y: auto;
-  max-height: 110px;
-  padding: 8px;
-  text-align: right;
-  box-sizing: border-box;
-  margin-left: 0;
-}
-
-#history-entries p {
-  margin: 2px 2px;
-}
 
 @media (max-width: 400px) {
   #display {

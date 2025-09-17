@@ -19,12 +19,6 @@
 
         <button class="history-toggle" onclick="toggleHistory()">History</button>
 
-        <div id="history">
-            <button class="clear-history" onclick="clearHistory()">Clear</button>
-            <p></p>
-            <div id="history-entries"></div>
-        </div>
-
         <div class="buttons">
 
             <button onclick="append('sin(')">sin</button>
@@ -87,6 +81,16 @@
             <button onclick="clearDisplay()">C</button>
         </div>
     </div>
+
+    <div id="history-overlay">
+       <div class="history-modal">
+         <button class="close-history" onclick="toggleHistory()">✖</button>
+         <h2>History</h2>
+         <button class="clear-history" onclick="clearHistory()">Clear</button>
+         <div id="history-entries"></div>
+        </div>
+    </div>
+
 
     <script src="../js/constant.js"></script>
     <script src="../js/scical.js"></script>
