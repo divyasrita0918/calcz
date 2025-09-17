@@ -57,7 +57,7 @@ convertBtn.addEventListener("click", async () => {
     return;
   }
 
-  result.innerHTML = `<i>Loading...</i>`;
+  result.innerHTML = `<img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." width="40">`;
 
   try {
     const rates = await fetchRates(from);
